@@ -1,0 +1,20 @@
+#heading{
+    color:orange;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: bold;
+    text-align: center;
+}
+
+#container{
+    display:grid;
+    padding:5px;
+    gap:1px;
+    grid-template-columns: auto auto auto;
+    margin:50px;
+   
+}
+.box{
+    text-align:center;
+    background-color: #f1f1f1;
+    padding: 40px;
+}
