@@ -18,3 +18,11 @@
     background-color: #f1f1f1;
     padding: 40px;
 }
+#player1{
+    width: 40%;
+    height:30%;
+}
+#player2{
+    width: 40%;
+    height:30%;
+}

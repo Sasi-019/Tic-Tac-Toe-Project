@@ -38,10 +38,21 @@ function winner(x,y,turn){
                   {  console.log("Winner")
                       win =true
                       setTimeout(() =>{alert(`player ${(turn+1)%2 +1} won `)},2000)
-                      setTimeout(() =>{  body.textContent ="Restart the game"},4000)
+                      setTimeout(() =>{  body.innerHTML =`
+                        <p>player ${(turn+1)%2 +1} won</p>
+                        <button onclick="restart()">RESTART</button>`},4000)
                     
 
                   }
+
+          if(turn ===9 && win===false)
+    {
+        setTimeout(() =>{  body.innerHTML =`
+                        <p>Tie</p>
+                        <button onclick="restart()">RESTART</button>`},1000)
+    }
+            
+              
                        
        if(turn%2 === 0)
                        {
@@ -58,7 +69,14 @@ function winner(x,y,turn){
                     }             
             
         console.log(arrayIndex)
+        
+        
        
+    }
+   
+
+    function restart(){
+        location.reload();
     }
  
 
