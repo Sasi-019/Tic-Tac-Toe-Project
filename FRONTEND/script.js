@@ -1,5 +1,5 @@
 let boxes = document.querySelectorAll(".box");
-const socket = io("http://localhost:3000");
+const socket = io();
 
 let arrayIndex = new Array(9).fill("");
 let turn = 0;
