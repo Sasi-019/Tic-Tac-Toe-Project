@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head>
-         <link rel="stylesheet" href="style.css">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    </head>
-    <body >
-        <h1 id="heading">Tic-Tac-Toe</h1>
-        <div id="container">
- <div id="container">
-  <div class="box" data-index="0"></div>
-  <div class="box" data-index="1"></div>
-  <div class="box" data-index="2"></div>
-  <div class="box" data-index="3"></div>
-  <div class="box" data-index="4"></div>
-  <div class="box" data-index="5"></div>
-  <div class="box" data-index="6"></div>
-  <div class="box" data-index="7"></div>
-  <div class="box" data-index="8"></div>
-</div>
-</div>
+<body>
 
-<p id="player"></p>
-  <button onclick="restart()">RESTART</button>
-   <script src="/socket.io/socket.io.js"></script>
+    <h1 id="heading">Tic Tac Toe</h1>
+
+    <!-- ✅ MESSAGE AREA -->
+    <p id="status">Connecting...</p>
+
+    <!-- ✅ GAME GRID -->
+    <div id="container">
+        <div class="box" data-index="0"></div>
+        <div class="box" data-index="1"></div>
+        <div class="box" data-index="2"></div>
+        <div class="box" data-index="3"></div>
+        <div class="box" data-index="4"></div>
+        <div class="box" data-index="5"></div>
+        <div class="box" data-index="6"></div>
+        <div class="box" data-index="7"></div>
+        <div class="box" data-index="8"></div>
+    </div>
+
+    <button onclick="restart()">Restart</button>
+
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
-    
-    </body>
+
+</body>
 </html>

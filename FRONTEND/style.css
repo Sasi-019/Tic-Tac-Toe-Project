@@ -1,20 +1,71 @@
-#heading{
-    color:orange;
-    font-family: 'Times New Roman', Times, serif;
-    font-style: bold;
+body {
+    margin: 0;
+    padding: 0;
     text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+
+    /* ✅ PAGE BACKGROUND (blue + dark green mix) */
+    background: linear-gradient(to right, #0f3057, #145374);
+    color: white;
 }
 
-#container{
-    display:grid;
-    padding:5px;
-    gap:1px;
-    grid-template-columns: auto auto auto;
-    margin:50px;
-   
+/* ✅ HEADING (same orange) */
+#heading {
+    color: orange;
+    font-size: 2.5rem;
+    margin-top: 20px;
 }
-.box{
-    text-align:center;
-    background-color: #f1f1f1;
+
+/* ✅ STATUS MESSAGE */
+#status {
+    font-size: 1.2rem;
+    margin: 10px;
+    color: white;
+}
+
+/* ✅ GRID CONTAINER */
+#container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+
+    width: 300px;
+    margin: 20px auto;
+}
+
+/* ✅ GRID BOXES (EXACTLY LIKE BEFORE) */
+.box {
+    background-color: #f1f1f1; /* same as your original */
+    color: black;
+
     padding: 40px;
+    text-align: center;
+    font-size: 1.8rem;
+
+    border: 1px solid black; /* simple border */
+    cursor: pointer;
+}
+
+/* optional simple hover */
+.box:hover {
+    background-color: #ddd;
+}
+
+/* ✅ BUTTON */
+button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* ✅ RESPONSIVE */
+@media (max-width: 500px) {
+    #container {
+        width: 90%;
+    }
+
+    .box {
+        padding: 30px;
+        font-size: 1.5rem;
+    }
 }

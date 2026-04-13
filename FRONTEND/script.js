@@ -1,136 +1,117 @@
 let boxes = document.querySelectorAll(".box");
 const socket = io();
 
-let arrayIndex = new Array(9).fill("");
-let turn = 0;
+let board = new Array(9).fill("");
 let win = false;
 
 let myRole = "";
-let canPlay = false; //  controls turn
+let canPlay = false;
 
-const body = document.querySelector("body");
-const player = document.querySelector("#player");
+const statusText = document.getElementById("status");
 
-
-//  receive player role
+// ✅ Role
 socket.on("playerRole", (role) => {
     myRole = role;
-    console.log("My role:", role);
+    statusText.textContent = `You are Player ${role}`;
+});
 
-    // Player O starts first
-    if (role === "O") {
+// ✅ Waiting
+socket.on("waiting", () => {
+    statusText.textContent = "Waiting for second player...";
+    canPlay = false;
+});
+
+// ✅ Start game
+socket.on("startGame", () => {
+    if (myRole === "O") {
         canPlay = true;
+        statusText.textContent = "Your turn";
+    } else {
+        canPlay = false;
+        statusText.textContent = "Opponent turn";
     }
 });
 
-
-//  CLICK HANDLER
+// ✅ Click
 boxes.forEach(box => {
     box.addEventListener("click", () => {
 
-        if (
-            box.innerText === "" &&
-            win === false &&
-            canPlay === true
-        ) {
-            let index = box.dataset.index;
-            let output = "";
+        let index = box.dataset.index;
 
-            turn++;
+        if (box.innerText === "" && !win && canPlay) {
 
-            if (turn % 2 === 1) {
-                output = "O";
-            } else {
-                output = "X";
-            }
+            box.innerText = myRole;
+            board[index] = myRole;
 
-            box.innerText = output;
-
-            //  lock current player
             canPlay = false;
+            statusText.textContent = "Opponent turn";
 
-            //  send move to server
-            socket.emit("move", {
-                index: index,
-                value: output
-            });
+            socket.emit("move", { index });
 
-            winner(index, output, turn);
+            checkWinner();
         }
     });
 });
 
-
-//  RECEIVE MOVE FROM SERVER
+// ✅ Receive move
 socket.on("move", (data) => {
     let box = document.querySelector(`[data-index='${data.index}']`);
 
     if (box.innerText === "") {
         box.innerText = data.value;
+        board[data.index] = data.value;
 
-        turn++;
-        winner(data.index, data.value, turn);
+        checkWinner();
 
-        //  allow this player to play now
-        canPlay = true;
+        if (data.value !== myRole) {
+            canPlay = true;
+            statusText.textContent = "Your turn";
+        }
     }
 });
 
-
-// WIN LOGIC
+// ✅ Winner
 let winningSet = [
     [0,1,2],[3,4,5],[6,7,8],
     [0,3,6],[1,4,7],[2,5,8],
     [0,4,8],[2,4,6]
 ];
 
-function winner(x, y, turn) {
-    arrayIndex[x] = y;
+function checkWinner() {
+    for (let combo of winningSet) {
+        let [a, b, c] = combo;
 
-    for (let i = 0; i < 8; i++) {
         if (
-            arrayIndex[winningSet[i][0]] !== "" &&
-            arrayIndex[winningSet[i][0]] === arrayIndex[winningSet[i][1]] &&
-            arrayIndex[winningSet[i][1]] === arrayIndex[winningSet[i][2]]
+            board[a] &&
+            board[a] === board[b] &&
+            board[a] === board[c]
         ) {
             win = true;
 
-            //  notify server
-            socket.emit("gameOver", y);
-
-            setTimeout(() => {
-                alert(`Player ${y} won`);
-            }, 500);
+            socket.emit("gameOver", board[a]);
+            return;
         }
+    }
 
-        if (turn === 9 && win === false) {
-            setTimeout(() => {
-                alert("Tie");
-            }, 500);
-        }
-
-        if (turn % 2 === 0) {
-            player.textContent = "Player O playing";
-        } else {
-            player.textContent = "Player X playing";
-        }
+    if (!board.includes("")) {
+        setTimeout(() => {
+            statusText.textContent = "Tie Game";
+        }, 200);
     }
 }
 
-
-//  SYNC WINNER ON BOTH SCREENS
+// ✅ Sync winner
 socket.on("gameOver", (winner) => {
     win = true;
 
-    setTimeout(() => {
-        body.innerHTML = `
-            <p>Player ${winner} won</p>
-            <button onclick="restart()">RESTART</button>
-        `;
-    }, 500);
+    statusText.textContent = `Player ${winner} won 🎉`;
 });
 
-
+// ✅ Restart
 function restart() {
-    location.reload();
+    socket.emit("restart");
 }
+
+socket.on("restart", () => {
+    location.reload();
+});
