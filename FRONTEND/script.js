@@ -9,19 +9,19 @@ let canPlay = false;
 
 const statusText = document.getElementById("status");
 
-// ✅ Role
+//  Role
 socket.on("playerRole", (role) => {
     myRole = role;
     statusText.textContent = `You are Player ${role}`;
 });
 
-// ✅ Waiting
+//  Waiting
 socket.on("waiting", () => {
     statusText.textContent = "Waiting for second player...";
     canPlay = false;
 });
 
-// ✅ Start game
+//  Start game
 socket.on("startGame", () => {
     if (myRole === "O") {
         canPlay = true;
@@ -32,7 +32,7 @@ socket.on("startGame", () => {
     }
 });
 
-// ✅ Click
+// Click
 boxes.forEach(box => {
     box.addEventListener("click", () => {
 
@@ -53,7 +53,7 @@ boxes.forEach(box => {
     });
 });
 
-// ✅ Receive move
+//  Receive move
 socket.on("move", (data) => {
     let box = document.querySelector(`[data-index='${data.index}']`);
 
@@ -70,7 +70,7 @@ socket.on("move", (data) => {
     }
 });
 
-// ✅ Winner
+//  Winner
 let winningSet = [
     [0,1,2],[3,4,5],[6,7,8],
     [0,3,6],[1,4,7],[2,5,8],
@@ -100,14 +100,14 @@ function checkWinner() {
     }
 }
 
-// ✅ Sync winner
+//  Sync winner
 socket.on("gameOver", (winner) => {
     win = true;
 
     statusText.textContent = `Player ${winner} won 🎉`;
 });
 
-// ✅ Restart
+// Restart
 function restart() {
     socket.emit("restart");
 }
